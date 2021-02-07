@@ -3,6 +3,7 @@ const router  = express.Router();
 const auth    = require("../../middleware/authentication");
 const { check, validationResult } = require("express-validator");
 
+const User    = require("../../models/User");
 const Profile = require("../../models/Profile");
 
 // @route   GET api/profiles
@@ -43,7 +44,6 @@ router.get("/me", auth, async (req, res) => {
 // @access  Public
 router.get("/user/:userId", async (req, res) => {
   try {
-    console.log(req.params.userId)
     const profile = await Profile.findOne({
       user: req.params.userId,
     }).populate("user", ["name", "email"]);
@@ -105,7 +105,21 @@ router.post(
   }
 );
 
-// @route   PUT api/task
+// @route    DELETE api/profiles
+// @desc     Delete profile and user
+// @access   Private
+router.delete("/", auth, async (req, res) => {
+  try {
+    await Profile.findOneAndDelete({ user: req.user.id });
+    await User.findOneAndDelete({ _id: req.user.id });
+    res.json({ msg: "User deleted." });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server Error.");
+  }
+});
+
+// @route   PUT api/profiles/task
 // @desc    Add a beacon task
 // @access  Private
 router.put(
@@ -144,7 +158,7 @@ router.put(
   }
 );
 
-// @route   DELETE api/task/:taskId
+// @route   DELETE api/profiles/task/:taskId
 // @desc    Delete beacon task from profile
 // @access  Private
 router.delete("/task/:taskId", auth, async (req, res) => {
