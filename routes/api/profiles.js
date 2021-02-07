@@ -105,4 +105,68 @@ router.post(
   }
 );
 
+// @route   PUT api/task
+// @desc    Add a beacon task
+// @access  Private
+router.put(
+  "/task",
+  [auth, [check("title", "Title of task is required.").not().isEmpty()]],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(500).json({ errors: errors.array() });
+    }
+
+    // Destructure task fields.
+    const { title, description, deadline, location } = req.body;
+    const newTask = {
+      title,
+      description,
+      deadline,
+      location,
+    };
+
+    try {
+      const profile = await Profile.findOne({ user: req.user.id });
+      if (!profile) {
+        return res
+          .json(400)
+          .json({ msg: "Profile must be created to add beacon task." });
+      }
+
+      profile.tasks.unshift(newTask);
+      await profile.save();
+      res.json(profile);
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).send("Server Error.");
+    }
+  }
+);
+
+// @route   DELETE api/task/:taskId
+// @desc    Delete beacon task from profile
+// @access  Private
+router.delete("/task/:taskId", auth, async (req, res) => {
+  try {
+    const profile = await Profile.findOne({ user: req.user.id });
+
+    // Get index of task to be removed from list of beacon tasks.
+    const removalIdx = profile.tasks
+      .map((item) => item.id)
+      .indexOf(req.params.taskId);
+
+    // Remove experience through splice.
+    if (removalIdx !== -1) {
+      profile.tasks.splice(removalIdx, 1);
+    }
+
+    await profile.save();
+    res.json(profile);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server Error.");
+  }
+});
+
 module.exports = router;
