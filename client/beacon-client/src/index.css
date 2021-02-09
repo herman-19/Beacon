@@ -1,0 +1,58 @@
+@import url("https://fonts.googleapis.com/css2?family=Arvo&display=swap");
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Arvo", serif;
+  height: 100%;
+}
+
+.landing {
+  height: 100vh;
+  background-image: url("../src/img/helping-3.jpeg");
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.landing h1 {
+  margin-bottom: 10px;
+  text-decoration: underline;
+  font-size: 2rem;
+}
+
+.landing p {
+  font-style: italic;
+}
+
+.landing-box {
+  position: fixed;
+  left: 50%;
+  top: 25%;
+  transform: translate(-50%, -50%);
+
+  padding: 30px;
+  border-radius: 5px;
+  border: 1.5px solid black;
+  background-color: rgb(199, 132, 120);
+  opacity: 0.9;
+
+  text-align: center;
+  color: #ffffff;
+}
+
+/* Overlay */
+.dark-overlay {
+  background-color: rgba(0, 0, 0, 0.35);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
