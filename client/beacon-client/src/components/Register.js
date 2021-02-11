@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 
@@ -9,10 +9,7 @@ const Register = () => {
   };
 
   return (
-    <div className="landing-box">
-      <h1>Beacon</h1>
-      <p>Help your friends and family</p>
-      <p>—and let them help you!</p>
+    <Fragment>
       <form onSubmit={handleSubmit(onSubmit)}>
         <input
           type="text"
@@ -31,7 +28,7 @@ const Register = () => {
               message: "Enter a valid e-mail address",
             },
           })}
-          placeholder="E-mail"
+          placeholder="Email Address"
         />
         {errors.email && <h5 className="error">{errors.email.message}</h5>}
         <input
@@ -40,8 +37,8 @@ const Register = () => {
           ref={register({
             required: "Password is required.",
             minLength: {
-              value: 8,
-              message: "Must exceed 8 characters.",
+              value: 6,
+              message: "Must exceed 6 characters.",
             },
           })}
           placeholder="Password"
@@ -51,7 +48,7 @@ const Register = () => {
         )}
         <button type="submit">Sign Up</button>
       </form>
-    </div>
+    </Fragment>
   );
 };
 
