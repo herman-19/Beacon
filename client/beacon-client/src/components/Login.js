@@ -16,7 +16,7 @@ const Login = () => {
           localStorage.setItem("token", res.data.token);
           setMessage({ info: `Logging in...`, type: `success`});
           e.target.reset();
-          setTimeout(() => { history.push("/dashboard")}, 2000);
+          setTimeout(() => { history.push("/dashboard")}, 1000);
       } catch (error) {
           const errMsg = error.response.data.errors[0].msg;
           setMessage({ info: `${errMsg}`, type: `warning`});

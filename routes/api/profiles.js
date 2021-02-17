@@ -25,9 +25,7 @@ router.get("/", async (req, res) => {
 // @access  Private
 router.get("/me", auth, async (req, res) => {
   try {
-    const profile = await (
-      await Profile.findOne({ user: req.user.id })
-    ).populate("user", ["name", "email"]);
+    const profile =  await Profile.findOne({ user: req.user.id }).populate({ path: "user", model:"user", select: ["name", "email"]});
     if (!profile) {
       return res.status(400).json({ msg: "No existing profile." });
     } else {
@@ -44,10 +42,7 @@ router.get("/me", auth, async (req, res) => {
 // @access  Public
 router.get("/user/:userId", async (req, res) => {
   try {
-    const profile = await Profile.findOne({
-      user: req.params.userId,
-    }).populate("user", ["name", "email"]);
-
+    const profile =  await Profile.findOne({ user: req.params.userId }).populate({ path: "user", model:"user", select: ["name", "email"]});
     if (!profile) {
       return res.status(400).json({ msg: "Profile not found." });
     }

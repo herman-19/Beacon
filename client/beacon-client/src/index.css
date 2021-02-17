@@ -78,17 +78,13 @@ body {
   margin: 10px auto;
   border-radius: 5px;
   padding: 5px 10px;
-  background-color: #aa370a;
+  background-color: rgb(228, 77, 58);
   color: #ffffff;
 }
 
 .landing-box button:hover {
   background-color: #c4af53;
   color: #ffffff;
-}
-
-.landing-box button:active {
-  /* width: 50%; */
 }
 
 .landing-box img {
@@ -114,4 +110,95 @@ hr {
   border: 0;
   border-top: 1px solid #ccc;
   margin: 1em 0;
+}
+
+.dashboard {
+  background-color: rgb(242, 242, 242);
+  height: 100vh;
+}
+
+.container {
+  margin: 20px auto;
+  width: 90%;
+}
+
+.container ul {
+  list-style-type: none;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+#bio-block {
+  flex: 33%;
+  padding: 15px;
+}
+
+#main-block {
+  flex: 66%;
+  padding: 15px;
+  text-align: center;
+}
+
+ul.topnav {
+  list-style-type: none;
+  overflow: hidden;
+  background-color: #e44d3a;
+  top: 0;
+  width: 100%;
+}
+
+ul.topnav li {
+  float: left;
+}
+
+ul.topnav li i {
+  margin: 4px;
+}
+
+ul.topnav li a {
+  display: block;
+  color: #fff;
+  text-align: center;
+  padding: 12px 14px;
+  text-decoration: none;
+}
+
+ul.topnav li.right {
+  float: right;
+}
+
+.card-segment-horizontal {
+  border: solid lightgrey;
+  border-width: 0.5px 0 0 0;
+  padding: 10px;
+}
+
+.card-segment-horizontal h3 {
+  font-weight: 900;
+  margin-bottom: 10px;
+}
+
+.card-segment-horizontal p {
+  font-weight: 300;
+}
+
+#edit-profile-link {
+  color: #e44d3a;
+  text-decoration: none;
+  font-weight: 900;
+  padding: 10px;
+}
+
+@media screen and (max-width: 600px) {
+  ul.topnav li.right,
+  ul.topnav li {
+    float: none;
+  }
+
+  .row {
+    display: block;
+  }
 }
