@@ -142,12 +142,16 @@ hr {
   text-align: center;
 }
 
+#nav-container {
+  background-color: #e44d3a;
+}
+
 ul.topnav {
   list-style-type: none;
   overflow: hidden;
-  background-color: #e44d3a;
   top: 0;
-  width: 100%;
+  width: 90%;
+  margin: auto;
 }
 
 ul.topnav li {

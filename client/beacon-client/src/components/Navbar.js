@@ -11,7 +11,7 @@ function Navbar() {
 
   return (
     <div>
-      <nav>
+      <nav id="nav-container">
         <ul className="topnav">
           <li>
             <Link to="/dashboard">
