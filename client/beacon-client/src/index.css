@@ -112,7 +112,7 @@ hr {
   margin: 1em 0;
 }
 
-.dashboard {
+.background {
   background-color: rgb(242, 242, 242);
   height: 100vh;
 }
@@ -194,6 +194,34 @@ ul.topnav li.right {
   text-decoration: none;
   font-weight: 900;
   padding: 10px;
+}
+
+.form-group {
+  margin: 15px 15px 0 15px;
+}
+
+.form-group label {
+  font-weight: bolder;
+}
+
+#edit-profile-form {
+  margin: auto;
+  text-align: left;
+  background-color: #fff;
+  border: 1.5px solid black;
+  border-radius: 5px;
+  padding: 20px;
+  max-width: 80%;
+}
+
+#edit-profile-form input {
+  /* display: block; */
+  border: 1.5px solid grey;
+  border-radius: 5px;
+  height: 20px;
+  width: 100%;
+  padding: 15px 10px;
+  margin: 10px 0;
 }
 
 @media screen and (max-width: 600px) {

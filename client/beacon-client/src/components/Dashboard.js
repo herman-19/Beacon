@@ -55,7 +55,7 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div className="dashboard">
+    <div className="background">
       <Navbar />
       {myProfile !== null && allProfiles !== null ? (
         <div className="container row">
