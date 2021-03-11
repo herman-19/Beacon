@@ -85,10 +85,6 @@ const Dashboard = () => {
                 <p>{myProfile.tasks.length}</p>
               </div>
               <div className="card-segment-horizontal">
-                <h3>Helped Out With</h3>
-                <p>8</p>
-              </div>
-              <div className="card-segment-horizontal">
                 <Link to="/edit-profile" id="edit-profile-link">
                   <span>edit profile</span>
                 </Link>

@@ -7,11 +7,13 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import ListItemText from "@material-ui/core/ListItemText";
+import Button from "@material-ui/core/Button";
 import axios from "axios";
 import config from "../config";
 
 function EditProfile() {
   const [formData, setFormData] = useState(null);
+  const [bioText, setBioText] = useState("");
 
   useEffect(() => {
     async function fetchData() {
@@ -30,15 +32,24 @@ function EditProfile() {
   }, []);
 
   const onChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    setBioText(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submit.");
+    if (bioText.length === 0) return;
+    try {
+      const data = JSON.stringify({ bio: bioText });
+      console.log(data);
+      axios.defaults.headers.common["x-auth-token"] = localStorage.token;
+      await axios.post(`${config.baseUrl}/api/profiles/`, data, {
+        headers: { "Content-Type": "application/json" },
+      });
+      setFormData({ ...formData, bio: bioText });
+      setBioText("");
+    } catch (error) {
+      console.error(error.message);
+    }
   };
 
   const removeTask = async (task) => {
@@ -60,36 +71,47 @@ function EditProfile() {
       <Navbar />
       <div className="container">
         {formData !== null ? (
-          <form id="edit-profile-form" onSubmit={() => handleSubmit()}>
+          <form id="edit-profile-form" onSubmit={handleSubmit}>
             <h1>Edit Profile</h1>
-            <div className="form-group">
-              <label htmlFor="bio">Bio:</label>
+            <div className="edit-profile-group">
+              <label htmlFor="bio">
+                <h2>Bio: </h2>
+              </label>
+              <span>{formData.bio}</span>
               <input
                 type="text"
-                placeholder="Bio"
+                placeholder="Update bio here..."
                 name="bio"
-                value={formData.bio}
+                value={bioText}
                 onChange={(e) => onChange(e)}
               />
+              <Button
+                id="update-button"
+                variant="contained"
+                color="secondary"
+                onClick={handleSubmit}
+              >
+                Update
+              </Button>
             </div>
-            <div className="form-group">
-              <label htmlFor="tasks">Tasks:</label>
+            <div className="edit-profile-group">
+              <h2>Tasks:</h2>
+              <List>
+                {formData.tasks.map((task) => (
+                  <ListItem key={task._id} role={undefined} button>
+                    <ListItemText
+                      primary={task.title}
+                      secondary={task.description}
+                    />
+                    <ListItemSecondaryAction>
+                      <IconButton edge="end" onClick={() => removeTask(task)}>
+                        <CloseIcon />
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                ))}
+              </List>
             </div>
-            <List>
-              {formData.tasks.map((task) => (
-                <ListItem key={task._id} role={undefined} dense button>
-                  <ListItemText
-                    primary={task.title}
-                    secondary={task.description}
-                  />
-                  <ListItemSecondaryAction>
-                    <IconButton edge="end" onClick={() => removeTask(task)}>
-                      <CloseIcon />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              ))}
-            </List>
           </form>
         ) : (
           <CircularProgress />
