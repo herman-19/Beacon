@@ -229,6 +229,11 @@ ul.topnav li.right {
   border-radius: 5px;
   padding: 20px;
   max-width: 80%;
+  min-width: 400px;
+}
+
+#edit-profile-form h1 {
+  margin: 15px 15px 0 15px;
 }
 
 #edit-profile-form input {
@@ -255,4 +260,53 @@ ul.topnav li.right {
     margin: 10px 0 25px 0;
     float: center;
   }
+}
+
+/* Designer credit: https://dribbble.com/shots/1978243-Latest-News */
+.app-card-list {
+  margin: auto;
+  overflow-x: scroll;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+.app-card-list::-webkit-scrollbar {
+  display: none;
+}
+/* @media (min-width: 768px) {
+  .app-card-list {
+    width: 80%;
+    white-space: nowrap;
+    margin-top: 0;
+  }
+} */
+
+.card {
+  margin: 5px 10px;
+  display: inline-block;
+  max-width: 35%;
+  background-color: #fff;
+  border: 0.5px solid black;
+}
+
+.card-header {
+  max-width: 100%;
+  height: 100%;
+}
+.card-header img {
+  width: 100%;
+  height: auto;
+  /* border-radius: 10px; */
+}
+
+.card-body {
+  margin: 10px;
+  padding: 10px;
+}
+
+.designer-link {
+  display: inline-block;
+  padding-top: 40px;
 }
