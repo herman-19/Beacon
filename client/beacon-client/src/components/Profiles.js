@@ -22,7 +22,7 @@ function Profiles() {
   }, []);
 
   return (
-    <div className="background">
+    <div>
       <Navbar />
       <div className="container">
         {allProfiles !== null ? (

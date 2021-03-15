@@ -67,7 +67,7 @@ function EditProfile() {
   };
 
   return (
-    <div className="background">
+    <div>
       <Navbar />
       <div className="container">
         {formData !== null ? (
