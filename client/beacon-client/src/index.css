@@ -258,8 +258,10 @@ ul.topnav li.right {
   margin: 5px 10px;
   display: inline-block;
   max-width: 35%;
+  min-width: 350px;
   background-color: #fff;
-  border: 0.5px solid black;
+  border: 1px solid lightgrey;
+  border-radius: 4px;
 }
 
 .light-text {
@@ -279,7 +281,9 @@ ul.topnav li.right {
 .card-header img {
   width: 100%;
   height: auto;
-  /* border-radius: 10px; */
+  border-radius: 4px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
 .card-body {
@@ -330,6 +334,5 @@ ul.topnav li.right {
 
   .card {
     max-width: 60%;
-    min-width: 400px;
   }
 }
