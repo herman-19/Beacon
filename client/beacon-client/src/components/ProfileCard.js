@@ -7,9 +7,10 @@ const ProfileCard = ({ profileInfo }) => {
     <article className="card">
       <ProfileCardHeader image={profileInfo.image} />
       <ProfileCardBody
-        name={profileInfo.name}
+        name={profileInfo.user.name}
         bio={profileInfo.bio}
         taskCount={profileInfo.tasks.length}
+        userId={profileInfo.user._id}
       />
     </article>
   );
