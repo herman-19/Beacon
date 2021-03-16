@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Navbar from "../components/Navbar";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import List from "@material-ui/core/List";
@@ -14,6 +14,8 @@ import config from "../config";
 function EditProfile() {
   const [formData, setFormData] = useState(null);
   const [bioText, setBioText] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
+  const fileInput = useRef(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -39,10 +41,14 @@ function EditProfile() {
     e.preventDefault();
     if (bioText.length === 0) return;
     try {
-      const data = JSON.stringify({ bio: bioText });
-      console.log(data);
+      const fd = new FormData();
+      fd.append("bio", bioText);
+
+      if (fileInput.current.files.length > 0) {
+        fd.append("profileImage", selectedFile);
+      }
       axios.defaults.headers.common["x-auth-token"] = localStorage.token;
-      await axios.post(`${config.baseUrl}/api/profiles/`, data, {
+      await axios.post(`${config.baseUrl}/api/profiles/`, fd, {
         headers: { "Content-Type": "application/json" },
       });
       setFormData({ ...formData, bio: bioText });
@@ -66,13 +72,22 @@ function EditProfile() {
     }
   };
 
+  const handleFileInput = (e) => {
+      setSelectedFile(e.target.files[0]);
+  }
+
   return (
     <div>
       <Navbar />
       <div className="container">
         {formData !== null ? (
-          <form id="edit-profile-form" onSubmit={handleSubmit}>
+          <form id="edit-profile-form" onSubmit={handleSubmit} encType="multipart/form-data">
             <h1>Edit Profile</h1>
+            <div id="image-upload-input">
+                <label htmlFor="profileImage">Upload Image:
+                <input ref={fileInput} type="file" id="profileImage" name="profileImage" onChange={handleFileInput} />
+                </label>
+            </div>
             <div className="edit-profile-group">
               <label htmlFor="bio">
                 <h2>Bio: </h2>
@@ -84,6 +99,7 @@ function EditProfile() {
                 name="bio"
                 value={bioText}
                 onChange={(e) => onChange(e)}
+                className="text-input"
               />
               <Button
                 id="update-button"

@@ -26,6 +26,10 @@ const ProfileSchema = new mongoose.Schema({
       },
     },
   ],
+  img: {
+    data: Buffer,
+    contentType: String,
+  },
   date: {
     type: Date,
     default: Date.now,

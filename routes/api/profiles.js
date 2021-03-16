@@ -1,6 +1,9 @@
 const express = require("express");
 const router  = express.Router();
 const auth    = require("../../middleware/authentication");
+const fs      = require("fs");
+const path    = require('path');
+
 const { check, validationResult } = require("express-validator");
 
 const User    = require("../../models/User");
@@ -71,11 +74,19 @@ router.post(
 
     // Destructure profile fields from request body.
     const { bio } = req.body;
+    const { file } = req;
 
     // Build profile object.
     const fields = {};
     fields.user = req.user.id;
     if (bio) fields.bio = bio;
+    if (file) {
+      console.log("PATH: "+"../uploads/" + req.file.filename)
+      fields.img = {
+        data: fs.readFileSync(path.resolve(__dirname, "../../uploads/",req.file.filename)),
+        contentType: "image/png"
+      }
+    }
 
     try {
       let profile = await Profile.findOne({ user: req.user.id });

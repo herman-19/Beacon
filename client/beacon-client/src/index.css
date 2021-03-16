@@ -232,13 +232,17 @@ ul.topnav li.right {
   margin: 15px 15px 0 15px;
 }
 
-#edit-profile-form input {
+.text-input {
   border: 1.5px solid grey;
   border-radius: 5px;
   height: 20px;
   width: 100%;
   padding: 15px 10px;
   margin: 10px 0;
+}
+
+#image-upload-input {
+  margin: 15px 15px 30px 15px;
 }
 
 /* Designer credit: https://dribbble.com/shots/1978243-Latest-News */
@@ -258,7 +262,7 @@ ul.topnav li.right {
   margin: 5px 10px;
   display: inline-block;
   max-width: 35%;
-  min-width: 350px;
+  min-width: 330px;
   background-color: #fff;
   border: 1px solid lightgrey;
   border-radius: 4px;
