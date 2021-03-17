@@ -68,7 +68,6 @@ const SharedMenuCollapsible = (props) => {
       tasks.push(taskObj);
     });
   });
-  console.log(tasks);
 
   const listItems = tasks.map((item) => (
     <Menu.ListItem

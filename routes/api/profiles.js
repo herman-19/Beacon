@@ -81,7 +81,7 @@ router.post(
     fields.user = req.user.id;
     if (bio) fields.bio = bio;
     if (file) {
-      console.log("PATH: "+"../uploads/" + req.file.filename)
+      console.log("PATH: "+"../uploads/" + req.file.filename);
       fields.img = {
         data: fs.readFileSync(path.resolve(__dirname, "../../uploads/",req.file.filename)),
         contentType: "image/png"
