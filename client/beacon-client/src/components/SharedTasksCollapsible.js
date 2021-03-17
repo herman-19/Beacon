@@ -4,8 +4,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
 import Menu from "@mui-treasury/components/menu/collapsible";
 
-import penetrator from "../img/penetrator.jpeg";
-
 const useStyles = makeStyles((theme) => ({
   box: {
     backgroundColor: "#fff",
@@ -54,10 +52,22 @@ const SharedMenuCollapsible = (props) => {
   const createOnClick = (idx) => () => setIndex(idx);
   const classes = useStyles();
 
-  const tasks = [];
+  const listItemData = [];
+
   props.profiles.forEach((profile) => {
     if (profile.user._id === props.myId) {
       return;
+    }
+
+    const tempData = {};
+    const tasks = [];
+
+    if (profile.img) {
+      let imgObj = {
+        img: Buffer.from(profile.img.data.data).toString("base64"),
+        contentType: profile.img.contentType,
+      };
+      tempData["imgData"] = imgObj;
     }
     profile.tasks.forEach((task) => {
       let taskObj = {};
@@ -67,26 +77,40 @@ const SharedMenuCollapsible = (props) => {
       taskObj["id"] = task._id;
       tasks.push(taskObj);
     });
+    tempData["tasks"] = tasks;
+    listItemData.push(tempData);
   });
 
-  const listItems = tasks.map((item) => (
-    <Menu.ListItem
-      key={item.id}
-      button
-      selected={index === 1}
-      onClick={createOnClick(1)}
-      className={classes.listItem}
-    >
-      <div className="row">
-        <Avatar alt="Avatar" src={penetrator} className={classes.large} />
-        <div className={classes.taskBlock}>
-          <p className={classes.taskTitle}>{item.title}</p>
-          <p className={classes.taskDesc}>{item.description}</p>
-          <p className={classes.taskOwner}>{item.owner}</p>
-        </div>
-      </div>
-    </Menu.ListItem>
-  ));
+  let listItems = [];
+  listItemData.forEach((itemData) => {
+    listItems = itemData.tasks.map((item) => {
+      return (
+        <Menu.ListItem
+          key={item.id}
+          button
+          selected={index === 1}
+          onClick={createOnClick(1)}
+          className={classes.listItem}
+        >
+          <div className="row">
+            <Avatar
+              alt="Avatar"
+              src={
+                itemData.imgData &&
+                `data:image/${itemData.imgData.contentType};base64,${itemData.imgData.img}`
+              }
+              className={classes.large}
+            />
+            <div className={classes.taskBlock}>
+              <p className={classes.taskTitle}>{item.title}</p>
+              <p className={classes.taskDesc}>{item.description}</p>
+              <p className={classes.taskOwner}>{item.owner}</p>
+            </div>
+          </div>
+        </Menu.ListItem>
+      );
+    });
+  });
 
   return (
     <Box minWidth={343} className={classes.box}>
