@@ -62,11 +62,11 @@ const Dashboard = () => {
           <div id="bio-block">
             <Card className={classes.root}>
               <CardActionArea>
-                <CardMedia
+                {myProfile.img && <CardMedia
                   className={classes.media}
                   image={`data:image/${myProfile.img.contentType};base64,${Buffer.from(myProfile.img.data.data).toString(`base64`)}`}
                   title="User Image"
-                />
+                />}
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="h2">
                     {myProfile.user.name}

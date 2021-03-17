@@ -24,9 +24,7 @@ function EditProfile() {
         let res = await axios.get(`${config.baseUrl}/api/profiles/me`);
         setFormData({
           bio: res.data.bio,
-          tasks: [...res.data.tasks],
-          img: Buffer.from(res.data.img.data.data).toString('base64'),
-          contentType: res.data.img.contentType
+          tasks: [...res.data.tasks]
         });
       } catch (error) {
         console.error(error.message);
