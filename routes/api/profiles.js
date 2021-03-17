@@ -84,7 +84,7 @@ router.post(
       console.log("PATH: "+"../uploads/" + req.file.filename);
       fields.img = {
         data: fs.readFileSync(path.resolve(__dirname, "../../uploads/",req.file.filename)),
-        contentType: "image/png"
+        contentType: req.body.contentType
       }
     }
 

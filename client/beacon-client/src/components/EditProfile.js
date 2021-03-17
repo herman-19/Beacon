@@ -25,6 +25,8 @@ function EditProfile() {
         setFormData({
           bio: res.data.bio,
           tasks: [...res.data.tasks],
+          img: Buffer.from(res.data.img.data.data).toString('base64'),
+          contentType: res.data.img.contentType
         });
       } catch (error) {
         console.error(error.message);
@@ -45,7 +47,10 @@ function EditProfile() {
       fd.append("bio", bioText);
 
       if (fileInput.current.files.length > 0) {
-        fd.append("profileImage", selectedFile);
+          const parts = selectedFile.name.split('.');
+          const ext = parts[parts.length-1];
+          fd.append("profileImage", selectedFile);
+          fd.append("contentType", ext);
       }
       axios.defaults.headers.common["x-auth-token"] = localStorage.token;
       await axios.post(`${config.baseUrl}/api/profiles/`, fd, {

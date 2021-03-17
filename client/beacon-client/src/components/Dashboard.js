@@ -64,7 +64,7 @@ const Dashboard = () => {
               <CardActionArea>
                 <CardMedia
                   className={classes.media}
-                  image={`data:${myProfile.img.contentType};base64,${Buffer.from(myProfile.img.data.data).toString(`base64`)}`}
+                  image={`data:image/${myProfile.img.contentType};base64,${Buffer.from(myProfile.img.data.data).toString(`base64`)}`}
                   title="User Image"
                 />
                 <CardContent>
