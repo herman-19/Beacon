@@ -11,6 +11,7 @@ import Landing from "../src/components/Landing";
 import Dashboard from "../src/components/Dashboard";
 import EditProfile from "../src/components/EditProfile";
 import Profiles from "../src/components/Profiles";
+import UserProfile from "../src/components/UserProfile";
 import NotFound from "../src/components/NotFound";
 
 // function to guard the component for private access
@@ -37,6 +38,7 @@ function App() {
             component={authGuard(EditProfile)}
           />
           <Route exact path="/profiles" component={authGuard(Profiles)} />
+          <Route exact path="/profile/:id" component={authGuard(UserProfile)} />
           <Route path="*" component={NotFound} />
         </Switch>
       </Router>

@@ -1,18 +1,10 @@
 import React from "react";
-import axios from "axios";
-import config from "../config";
+import { useHistory } from "react-router-dom";
 
 const ProfileCardBody = ({ name, bio, taskCount, userId }) => {
+  const history = useHistory();
   const handleClick = async () => {
-    try {
-      axios.defaults.headers.common["x-auth-token"] = localStorage.token;
-      const res = await axios.get(
-        `${config.baseUrl}/api/profiles/user/${userId}`
-      );
-      console.log(res.data);
-    } catch (error) {
-      console.error(error.message);
-    }
+    history.push(`/profile/${userId}`);
   };
 
   return (

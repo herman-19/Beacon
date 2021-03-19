@@ -3,7 +3,6 @@ import ProfileCardHeader from "./ProfileCardHeader";
 import ProfileCardBody from "./ProfileCardBody";
 
 const ProfileCard = ({ profileInfo }) => {
-  console.log(profileInfo.img);
   return (
     <article className="card">
       <ProfileCardHeader
