@@ -9,7 +9,7 @@
 body {
   font-family: "Open Sans", sans-serif;
   height: 100%;
-  background-color: rgb(57 107 142);
+  background-color: rgb(63, 85, 124);
 }
 
 .landing {
@@ -284,7 +284,8 @@ ul.topnav li.right {
 }
 .card-header img {
   width: 100%;
-  height: auto;
+  height: 25vw;
+  object-fit: cover;
   border-radius: 4px;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
@@ -338,5 +339,12 @@ ul.topnav li.right {
 
   .card {
     max-width: 60%;
+    min-height: fit-content;
+  }
+}
+
+@media (max-width: 778px) {
+  .card-header img {
+    height: 200px;
   }
 }

@@ -3,9 +3,14 @@ import ProfileCardHeader from "./ProfileCardHeader";
 import ProfileCardBody from "./ProfileCardBody";
 
 const ProfileCard = ({ profileInfo }) => {
+  console.log(profileInfo.img);
   return (
     <article className="card">
-      <ProfileCardHeader image={profileInfo.image} />
+      <ProfileCardHeader
+        image={`data:image/${profileInfo.img.contentType};base64,${Buffer.from(
+          profileInfo.img.data.data
+        ).toString("base64")}`}
+      />
       <ProfileCardBody
         name={profileInfo.user.name}
         bio={profileInfo.bio}
