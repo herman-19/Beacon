@@ -24,7 +24,8 @@ function EditProfile() {
         let res = await axios.get(`${config.baseUrl}/api/profiles/me`);
         setFormData({
           bio: res.data.bio,
-          tasks: [...res.data.tasks]
+          tasks: [...res.data.tasks],
+          img: res.data.img,
         });
       } catch (error) {
         console.error(error.message);
@@ -39,22 +40,36 @@ function EditProfile() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (bioText.length === 0) return;
+    // if (bioText.length === 0) return;
     try {
       const fd = new FormData();
-      fd.append("bio", bioText);
 
       if (fileInput.current.files.length > 0) {
-          const parts = selectedFile.name.split('.');
-          const ext = parts[parts.length-1];
-          fd.append("profileImage", selectedFile);
-          fd.append("contentType", ext);
+        if (fileInput.current.files[0].size > 16e6) {
+          window.alert("Please upload a file smaller than 16 MB.");
+          return;
+        }
+        const parts = selectedFile.file.name.split(".");
+        const ext = parts[parts.length - 1];
+        fd.append("profileImage", selectedFile.file);
+        fd.append("contentType", ext);
       }
+
+      if (bioText) {
+        fd.append("bio", bioText);
+      } else {
+        fd.append("bio", formData.bio);
+      }
+
       axios.defaults.headers.common["x-auth-token"] = localStorage.token;
       await axios.post(`${config.baseUrl}/api/profiles/`, fd, {
         headers: { "Content-Type": "application/json" },
       });
-      setFormData({ ...formData, bio: bioText });
+      setFormData({
+        ...formData,
+        bio: bioText.length > 1 ? bioText : formData.bio,
+      });
+      console.log(formData);
       setBioText("");
     } catch (error) {
       console.error(error.message);
@@ -76,20 +91,43 @@ function EditProfile() {
   };
 
   const handleFileInput = (e) => {
-      setSelectedFile(e.target.files[0]);
-  }
+    setSelectedFile({
+      file: e.target.files[0],
+      url: URL.createObjectURL(e.target.files[0]),
+    });
+    console.log(e.target.files[0].__proto__.__proto__);
+  };
 
   return (
     <div>
       <Navbar />
       <div className="container">
         {formData !== null ? (
-          <form id="edit-profile-form" onSubmit={handleSubmit} encType="multipart/form-data">
-            <h1>Edit Profile</h1>
-            <div id="image-upload-input">
-                <label htmlFor="profileImage">Upload Image:
-                <input ref={fileInput} type="file" id="profileImage" name="profileImage" onChange={handleFileInput} />
-                </label>
+          <form
+            id="edit-profile-form"
+            onSubmit={handleSubmit}
+            encType="multipart/form-data"
+          >
+            <h3>Edit Profile</h3>
+            <div id="image-upload-group">
+              {formData.img && (
+                <img
+                  id="edit-profile-image"
+                  src={`data:image/${
+                    formData.img.contentType
+                  };base64,${Buffer.from(formData.img.data.data).toString(
+                    `base64`
+                  )}`}
+                  alt="User"
+                />
+              )}
+              <input
+                ref={fileInput}
+                type="file"
+                id="profileImage"
+                name="profileImage"
+                onChange={handleFileInput}
+              />
             </div>
             <div className="edit-profile-group">
               <label htmlFor="bio">
@@ -107,7 +145,7 @@ function EditProfile() {
               <Button
                 id="update-button"
                 variant="contained"
-                color="secondary"
+                color="primary"
                 onClick={handleSubmit}
               >
                 Update

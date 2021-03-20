@@ -1,12 +1,12 @@
 const express = require("express");
-const router  = express.Router();
-const auth    = require("../../middleware/authentication");
-const fs      = require("fs");
-const path    = require('path');
+const router = express.Router();
+const auth = require("../../middleware/authentication");
+const fs = require("fs");
+const path = require("path");
 
 const { check, validationResult } = require("express-validator");
 
-const User    = require("../../models/User");
+const User = require("../../models/User");
 const Profile = require("../../models/Profile");
 
 // @route   GET api/profiles
@@ -28,7 +28,11 @@ router.get("/", async (req, res) => {
 // @access  Private
 router.get("/me", auth, async (req, res) => {
   try {
-    const profile =  await Profile.findOne({ user: req.user.id }).populate({ path: "user", model:"user", select: ["name", "email"]});
+    const profile = await Profile.findOne({ user: req.user.id }).populate({
+      path: "user",
+      model: "user",
+      select: ["name", "email"],
+    });
     if (!profile) {
       return res.status(400).json({ msg: "No existing profile." });
     } else {
@@ -45,7 +49,9 @@ router.get("/me", auth, async (req, res) => {
 // @access  Public
 router.get("/user/:userId", async (req, res) => {
   try {
-    const profile =  await Profile.findOne({ user: req.params.userId }).populate({ path: "user", model:"user", select: ["name", "email"]});
+    const profile = await Profile.findOne({
+      user: req.params.userId,
+    }).populate({ path: "user", model: "user", select: ["name", "email"] });
     if (!profile) {
       return res.status(400).json({ msg: "Profile not found." });
     }
@@ -81,11 +87,13 @@ router.post(
     fields.user = req.user.id;
     if (bio) fields.bio = bio;
     if (file) {
-      console.log("PATH: "+"../uploads/" + req.file.filename);
+      console.log("PATH: " + "../uploads/" + req.file.filename);
       fields.img = {
-        data: fs.readFileSync(path.resolve(__dirname, "../../uploads/",req.file.filename)),
-        contentType: req.body.contentType
-      }
+        data: fs.readFileSync(
+          path.resolve(__dirname, "../../uploads/", req.file.filename)
+        ),
+        contentType: req.body.contentType,
+      };
     }
 
     try {

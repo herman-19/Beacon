@@ -140,6 +140,7 @@ hr {
 
 #nav-container {
   background-color: #e44d3a;
+  min-width: 400px;
 }
 
 ul.topnav {
@@ -192,8 +193,18 @@ ul.topnav li.right {
   padding: 10px;
 }
 
+#edit-profile-image {
+  width: 75%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 4px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  margin: 10px 0 15px 0;
+}
+
 .edit-profile-group {
-  margin: 15px 15px 30px 15px;
+  margin: 5px 15px 30px 15px;
 }
 
 .edit-profile-group h2 {
@@ -210,11 +221,9 @@ ul.topnav li.right {
 
 #update-button {
   padding: 10px;
-  border-radius: 15px;
-  min-width: 25%;
+  border-radius: 4px;
   background-color: teal;
-  float: right;
-  font-family: "Open Sans", sans-serif;
+  width: 100%;
 }
 
 #edit-profile-form {
@@ -224,11 +233,13 @@ ul.topnav li.right {
   border: 1.5px solid black;
   border-radius: 5px;
   padding: 20px;
-  max-width: 80%;
+  max-width: 450px;
   min-width: 400px;
 }
 
-#edit-profile-form h1 {
+#edit-profile-form h3 {
+  font-size: 25px;
+  font-weight: 900;
   margin: 15px 15px 0 15px;
 }
 
@@ -241,8 +252,21 @@ ul.topnav li.right {
   margin: 10px 0;
 }
 
-#image-upload-input {
-  margin: 15px 15px 30px 15px;
+#image-upload-group {
+  margin: 15px 15px 20px 15px;
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+#image-upload-group input {
+  font-size: 15px;
+  border-radius: 4px;
+  margin: auto;
+}
+
+input[type="file"] {
 }
 
 /* Designer credit: https://dribbble.com/shots/1978243-Latest-News */
