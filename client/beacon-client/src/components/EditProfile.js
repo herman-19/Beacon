@@ -15,6 +15,7 @@ function EditProfile() {
   const [formData, setFormData] = useState(null);
   const [bioText, setBioText] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
+  const [isUpdating, setIsUpdating] = useState(false);
   const fileInput = useRef(null);
 
   useEffect(() => {
@@ -40,7 +41,7 @@ function EditProfile() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // if (bioText.length === 0) return;
+    setIsUpdating(true);
     try {
       const fd = new FormData();
 
@@ -49,9 +50,9 @@ function EditProfile() {
           window.alert("Please upload a file smaller than 16 MB.");
           return;
         }
-        const parts = selectedFile.file.name.split(".");
+        const parts = selectedFile.name.split(".");
         const ext = parts[parts.length - 1];
-        fd.append("profileImage", selectedFile.file);
+        fd.append("profileImage", selectedFile);
         fd.append("contentType", ext);
       }
 
@@ -62,12 +63,14 @@ function EditProfile() {
       }
 
       axios.defaults.headers.common["x-auth-token"] = localStorage.token;
-      await axios.post(`${config.baseUrl}/api/profiles/`, fd, {
+      const res = await axios.post(`${config.baseUrl}/api/profiles/`, fd, {
         headers: { "Content-Type": "application/json" },
       });
+      setIsUpdating(false);
       setFormData({
         ...formData,
         bio: bioText.length > 1 ? bioText : formData.bio,
+        img: res.data.img,
       });
       console.log(formData);
       setBioText("");
@@ -91,11 +94,7 @@ function EditProfile() {
   };
 
   const handleFileInput = (e) => {
-    setSelectedFile({
-      file: e.target.files[0],
-      url: URL.createObjectURL(e.target.files[0]),
-    });
-    console.log(e.target.files[0].__proto__.__proto__);
+    setSelectedFile(e.target.files[0]);
   };
 
   return (
@@ -121,6 +120,7 @@ function EditProfile() {
                   alt="User"
                 />
               )}
+              {isUpdating && <CircularProgress />}
               <input
                 ref={fileInput}
                 type="file"
