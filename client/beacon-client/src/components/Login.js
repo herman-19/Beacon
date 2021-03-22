@@ -4,22 +4,26 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import config from "../config";
 
-const Login = () => {
+const Login = ({ loginDisplayed }) => {
   const { register, handleSubmit, errors } = useForm();
-  const [ message, setMessage ] = useState();
+  const [message, setMessage] = useState();
   const history = useHistory();
 
   const onSubmit = async (data, e) => {
-      try {
-          const res = await axios.post(`${config.baseUrl}/api/auth`, data, { headers: { 'Content-Type': 'application/json'}});
-          localStorage.setItem("token", res.data.token);
-          setMessage({ info: `Logging in...`, type: `success`});
-          e.target.reset();
-          setTimeout(() => { history.push("/dashboard")}, 1000);
-      } catch (error) {
-          const errMsg = error.response.data.errors[0].msg;
-          setMessage({ info: `${errMsg}`, type: `warning`});
-      }
+    try {
+      const res = await axios.post(`${config.baseUrl}/api/auth`, data, {
+        headers: { "Content-Type": "application/json" },
+      });
+      localStorage.setItem("token", res.data.token);
+      setMessage({ info: `Logging in...`, type: `success` });
+      e.target.reset();
+      setTimeout(() => {
+        history.push("/dashboard");
+      }, 1000);
+    } catch (error) {
+      const errMsg = error.response.data.errors[0].msg;
+      setMessage({ info: `${errMsg}`, type: `warning` });
+    }
   };
 
   return (
@@ -53,13 +57,21 @@ const Login = () => {
         {errors.password && (
           <h5 className="error">{errors.password.message} </h5>
         )}
-        { message && (
-            <div>
-                <h5 className={`${message.type}`}>{message.info}</h5>
-            </div>
+        {message && (
+          <div>
+            <h5 className={`${message.type}`}>{message.info}</h5>
+          </div>
         )}
         <button type="submit">Log In</button>
       </form>
+      <hr />
+      <button
+        onClick={() => {
+          loginDisplayed(false);
+        }}
+      >
+        Sign Up
+      </button>
     </Fragment>
   );
 };

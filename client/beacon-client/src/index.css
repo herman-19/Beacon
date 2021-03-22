@@ -75,8 +75,8 @@ body {
 
 .landing-box button {
   display: block;
-  width: 33%;
-  margin: 10px auto;
+  width: 100%;
+  margin: 5px auto;
   border-radius: 5px;
   padding: 5px 10px;
   background-color: rgb(228, 77, 58);

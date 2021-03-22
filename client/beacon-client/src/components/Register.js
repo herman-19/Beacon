@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import { useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 
-const Register = () => {
+const Register = ({ loginDisplayed }) => {
   const { register, handleSubmit, errors } = useForm();
   const onSubmit = async (data) => {
     alert(JSON.stringify(data));
@@ -48,6 +48,13 @@ const Register = () => {
         )}
         <button type="submit">Sign Up</button>
       </form>
+      <button
+        onClick={() => {
+          loginDisplayed(true);
+        }}
+      >
+        Have an account? Log in
+      </button>
     </Fragment>
   );
 };
