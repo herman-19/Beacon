@@ -90,7 +90,7 @@ const UserProfile = () => {
           <div id="main-block">
             <MenuCollapsible
               items={userProfile.tasks}
-              title="Tasks"
+              title={userProfile.tasks.length ? "Tasks" : `No Pending Tasks At The Moment...`}
               className={classes.collapsible}
             />
           </div>

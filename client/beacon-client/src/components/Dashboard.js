@@ -95,7 +95,7 @@ const Dashboard = () => {
           <div id="main-block">
             <MenuCollapsible
               items={myProfile.tasks}
-              title="My Tasks"
+              title={myProfile.tasks.length ? "My Tasks" : "No Tasks Yet"}
               className={classes.collapsible}
             />
 

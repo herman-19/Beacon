@@ -1,11 +1,30 @@
-import React, { Fragment } from "react";
+import React, { useState, Fragment } from "react";
 import { useForm } from "react-hook-form";
-import { ErrorMessage } from "@hookform/error-message";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
+import config from "../config";
 
 const Register = ({ loginDisplayed }) => {
   const { register, handleSubmit, errors } = useForm();
-  const onSubmit = async (data) => {
-    alert(JSON.stringify(data));
+  const [message, setMessage] = useState();
+  const history = useHistory();
+
+  const onSubmit = async (data, e) => {
+    console.log(data);
+    try {
+      const res = await axios.post(`${config.baseUrl}/api/users`, data, {
+        headers: { "Content-Type": "application/json" },
+      });
+      localStorage.setItem("token", res.data.token);
+      setMessage({ info: `Creating new account...`, type: `success` });
+      e.target.reset();
+      setTimeout(() => {
+        history.push("/dashboard");
+      }, 1000);
+    } catch (error) {
+      const errMsg = error.response.data.errors[0].msg;
+      setMessage({ info: `${errMsg}`, type: `warning` });
+    }
   };
 
   return (
@@ -14,10 +33,12 @@ const Register = ({ loginDisplayed }) => {
         <input
           type="text"
           name="name"
-          ref={register({ required: "Name is required." })}
+          ref={register({
+            required: "Name is required.",
+          })}
           placeholder="Name"
         />
-        <ErrorMessage errors={errors} name="name" as="h5" />
+        {errors.name && <h5 className="error">{errors.name.message}</h5>}
         <input
           type="text"
           name="email"
@@ -46,14 +67,20 @@ const Register = ({ loginDisplayed }) => {
         {errors.password && (
           <h5 className="error">{errors.password.message} </h5>
         )}
+        {message && (
+          <div>
+            <h5 className={`${message.type}`}>{message.info}</h5>
+          </div>
+        )}
         <button type="submit">Sign Up</button>
       </form>
+      <hr />
       <button
         onClick={() => {
           loginDisplayed(true);
         }}
       >
-        Have an account? Log in
+        Have an account? Log In
       </button>
     </Fragment>
   );

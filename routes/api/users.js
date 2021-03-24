@@ -1,11 +1,12 @@
 const express = require("express");
-const router  = express.Router();
-const bcrypt  = require("bcryptjs");
-const jwt     = require("jsonwebtoken");
-const conf    = require("config");
+const router = express.Router();
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const conf = require("config");
 const { check, validationResult } = require("express-validator");
 
 const User = require("../../models/User");
+const Profile = require("../../models/Profile");
 
 // @route   POST api/users
 // @desc    Register user
@@ -50,6 +51,16 @@ router.post(
       // Store new user to the database.
       await user.save();
 
+      // Create associated user profile.
+      console.log("New user id:" + user.id);
+      const fields = {
+        user: user.id,
+        bio: "Hi! I'm new to Beacon--excited to help out!",
+      };
+
+      const profile = new Profile(fields);
+      await profile.save();
+
       // Return jsonwebtoken so user is logged in after registration.
       const payload = {
         user: {
@@ -64,7 +75,7 @@ router.post(
         { expiresIn: 360000 },
         (err, token) => {
           if (err) throw err;
-          console.log(`User created: ${name}!`)
+          console.log(`User created: ${name}!`);
           res.json({ token });
         }
       );

@@ -6,9 +6,9 @@ const ProfileCard = ({ profileInfo }) => {
   return (
     <article className="card">
       <ProfileCardHeader
-        image={`data:image/${profileInfo.img.contentType};base64,${Buffer.from(
+        image={profileInfo.img ? `data:image/${profileInfo.img.contentType};base64,${Buffer.from(
           profileInfo.img.data.data
-        ).toString("base64")}`}
+        ).toString("base64")}` : ""}
       />
       <ProfileCardBody
         name={profileInfo.user.name}

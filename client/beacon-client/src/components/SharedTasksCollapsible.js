@@ -81,9 +81,10 @@ const SharedMenuCollapsible = (props) => {
     listItemData.push(tempData);
   });
 
-  let listItems = [];
+  let listElements = [];
+
   listItemData.forEach((itemData) => {
-    listItems = itemData.tasks.map((item) => {
+    let listItems = itemData.tasks.map((item) => {
       return (
         <Menu.ListItem
           key={item.id}
@@ -110,6 +111,7 @@ const SharedMenuCollapsible = (props) => {
         </Menu.ListItem>
       );
     });
+    listElements.push(listItems);
   });
 
   return (
@@ -130,7 +132,7 @@ const SharedMenuCollapsible = (props) => {
           </Menu.Row>
         )}
       >
-        {listItems}
+        {listElements.flat()}
       </Menu>
     </Box>
   );

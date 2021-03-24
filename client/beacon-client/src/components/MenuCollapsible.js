@@ -29,12 +29,12 @@ const useStyles = makeStyles({
   },
 });
 
-const MenuCollapsible = (props) => {
+const MenuCollapsible = ({items, title}) => {
   const [index, setIndex] = useState(-1);
   const createOnClick = (idx) => () => setIndex(idx);
   const classes = useStyles();
 
-  const listItems = props.items.map((item) => (
+  const listItems = items.map((item) => (
     <Menu.ListItem
       key={item._id}
       button
@@ -59,7 +59,7 @@ const MenuCollapsible = (props) => {
               onClick={createOnClick(0)}
               className={classes.title}
             >
-              <h3>{props.title}</h3>
+              <h3>{title}</h3>
             </Menu.RowItem>
             <Menu.Action button toggled={collapsed} onClick={onClick} />
           </Menu.Row>
