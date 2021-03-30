@@ -1,20 +1,17 @@
 import React, { useState, Fragment } from "react";
 import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import axios from "axios";
-import config from "../config";
+import { userLogin } from "../api/UserAPI";
 
 const Login = ({ loginDisplayed }) => {
   const { register, handleSubmit, errors } = useForm();
   const [message, setMessage] = useState();
   const history = useHistory();
 
-  const onSubmit = async (data, e) => {
+  const onSubmit = async (loginCredentials, e) => {
     try {
-      const res = await axios.post(`${config.baseUrl}/api/auth`, data, {
-        headers: { "Content-Type": "application/json" },
-      });
-      localStorage.setItem("token", res.data.token);
+      const data = await userLogin(loginCredentials);
+      localStorage.setItem("token", data.token);
       setMessage({ info: `Logging in...`, type: `success` });
       e.target.reset();
       setTimeout(() => {

@@ -9,8 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Navbar from "../components/Navbar";
 import MenuCollapsible from "../components/MenuCollapsible";
-import axios from "axios";
-import config from "../config";
+import { getUserProfileById } from "../api/UserAPI";
 
 const useStyles = makeStyles({
   root: {
@@ -37,10 +36,8 @@ const UserProfile = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        axios.defaults.headers.common["x-auth-token"] = localStorage.token;
-        let res = await axios.get(`${config.baseUrl}/api/profiles/user/${id}`);
-        setUserProfile(res.data);
-        console.log(res.data);
+        const data = await getUserProfileById(id);
+        setUserProfile(data);
       } catch (error) {
         console.error(error.message);
       }
@@ -90,7 +87,11 @@ const UserProfile = () => {
           <div id="main-block">
             <MenuCollapsible
               items={userProfile.tasks}
-              title={userProfile.tasks.length ? "Tasks" : `No Pending Tasks At The Moment...`}
+              title={
+                userProfile.tasks.length
+                  ? "Tasks"
+                  : `No Pending Tasks At The Moment...`
+              }
               className={classes.collapsible}
             />
           </div>

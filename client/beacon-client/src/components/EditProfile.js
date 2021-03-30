@@ -8,8 +8,7 @@ import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import ListItemText from "@material-ui/core/ListItemText";
 import Button from "@material-ui/core/Button";
-import axios from "axios";
-import config from "../config";
+import { getMyProfile, updateMyProfile, deleteTask } from "../api/UserAPI";
 
 function EditProfile() {
   const [formData, setFormData] = useState(null);
@@ -21,12 +20,11 @@ function EditProfile() {
   useEffect(() => {
     async function fetchData() {
       try {
-        axios.defaults.headers.common["x-auth-token"] = localStorage.token;
-        let res = await axios.get(`${config.baseUrl}/api/profiles/me`);
+        let data = await getMyProfile();
         setFormData({
-          bio: res.data.bio,
-          tasks: [...res.data.tasks],
-          img: res.data.img,
+          bio: data.bio,
+          tasks: [...data.tasks],
+          img: data.img,
         });
       } catch (error) {
         console.error(error.message);
@@ -62,17 +60,13 @@ function EditProfile() {
         fd.append("bio", formData.bio);
       }
 
-      axios.defaults.headers.common["x-auth-token"] = localStorage.token;
-      const res = await axios.post(`${config.baseUrl}/api/profiles/`, fd, {
-        headers: { "Content-Type": "application/json" },
-      });
+      const data = await updateMyProfile(fd);
       setIsUpdating(false);
       setFormData({
         ...formData,
         bio: bioText.length > 1 ? bioText : formData.bio,
-        img: res.data.img,
+        img: data.img,
       });
-      console.log(formData);
       setBioText("");
     } catch (error) {
       console.error(error.message);
@@ -81,8 +75,7 @@ function EditProfile() {
 
   const removeTask = async (task) => {
     try {
-      axios.defaults.headers.common["x-auth-token"] = localStorage.token;
-      await axios.delete(`${config.baseUrl}/api/profiles/task/` + task._id);
+      await deleteTask(task._id);
       const updatedTasks = formData.tasks.filter((t) => t._id !== task._id);
       setFormData({
         ...formData,

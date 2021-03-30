@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import ProfileCard from "../components/ProfileCard";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import axios from "axios";
-import config from "../config";
+import { getAllProfiles } from "../api/UserAPI";
 
 function Profiles() {
   const [allProfiles, setAllProfiles] = useState(null);
@@ -11,9 +10,8 @@ function Profiles() {
   useEffect(() => {
     async function fetchData() {
       try {
-        axios.defaults.headers.common["x-auth-token"] = localStorage.token;
-        let res = await axios.get(`${config.baseUrl}/api/profiles/`);
-        setAllProfiles(res.data);
+        const data = await getAllProfiles();
+        setAllProfiles(data);
       } catch (error) {
         console.error(error.message);
       }

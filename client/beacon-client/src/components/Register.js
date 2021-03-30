@@ -1,21 +1,17 @@
 import React, { useState, Fragment } from "react";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
-import axios from "axios";
-import config from "../config";
+import { userRegistration } from "../api/UserAPI";
 
 const Register = ({ loginDisplayed }) => {
   const { register, handleSubmit, errors } = useForm();
   const [message, setMessage] = useState();
   const history = useHistory();
 
-  const onSubmit = async (data, e) => {
-    console.log(data);
+  const onSubmit = async (registrationData, e) => {
     try {
-      const res = await axios.post(`${config.baseUrl}/api/users`, data, {
-        headers: { "Content-Type": "application/json" },
-      });
-      localStorage.setItem("token", res.data.token);
+      const data = await userRegistration(registrationData);
+      localStorage.setItem("token", data.token);
       setMessage({ info: `Creating new account...`, type: `success` });
       e.target.reset();
       setTimeout(() => {

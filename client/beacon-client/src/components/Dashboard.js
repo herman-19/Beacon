@@ -9,12 +9,8 @@ import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import MenuCollapsible from "../components/MenuCollapsible";
 import SharedTasksCollapsible from "../components/SharedTasksCollapsible";
-import axios from "axios";
-import config from "../config";
-
 import Navbar from "./Navbar";
-
-import penetrator from "../img/penetrator.jpeg";
+import { getMyProfile, getAllProfiles } from "../api/UserAPI";
 
 const useStyles = makeStyles({
   root: {
@@ -41,12 +37,10 @@ const Dashboard = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        axios.defaults.headers.common["x-auth-token"] = localStorage.token;
-        let res = await axios.get(`${config.baseUrl}/api/profiles/me`);
-        setMyProfile(res.data);
-
-        res = await axios.get(`${config.baseUrl}/api/profiles/`);
-        setAllProfiles(res.data);
+        let data = await getMyProfile();
+        setMyProfile(data);
+        data = await getAllProfiles();
+        setAllProfiles(data);
       } catch (error) {
         console.error(error.message);
       }
@@ -62,11 +56,17 @@ const Dashboard = () => {
           <div id="bio-block">
             <Card className={classes.root}>
               <CardActionArea>
-                {myProfile.img && <CardMedia
-                  className={classes.media}
-                  image={`data:image/${myProfile.img.contentType};base64,${Buffer.from(myProfile.img.data.data).toString(`base64`)}`}
-                  title="User Image"
-                />}
+                {myProfile.img && (
+                  <CardMedia
+                    className={classes.media}
+                    image={`data:image/${
+                      myProfile.img.contentType
+                    };base64,${Buffer.from(myProfile.img.data.data).toString(
+                      `base64`
+                    )}`}
+                    title="User Image"
+                  />
+                )}
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="h2">
                     {myProfile.user.name}
