@@ -9,6 +9,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import ListItemText from "@material-ui/core/ListItemText";
 import Button from "@material-ui/core/Button";
 import { getMyProfile, updateMyProfile, deleteTask } from "../api/UserAPI";
+import axios from "axios";
 
 function EditProfile() {
   const [formData, setFormData] = useState(null);
@@ -16,11 +17,12 @@ function EditProfile() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [isUpdating, setIsUpdating] = useState(false);
   const fileInput = useRef(null);
+  const signal = axios.CancelToken.source();
 
   useEffect(() => {
     async function fetchData() {
       try {
-        let data = await getMyProfile();
+        const data = await getMyProfile(signal.token);
         setFormData({
           bio: data.bio,
           tasks: [...data.tasks],
@@ -31,6 +33,11 @@ function EditProfile() {
       }
     }
     fetchData();
+
+    // Cleanup: Signal to cancel any request.
+    return () => {
+      signal.cancel("Request for Edit Profile page canceled.");
+    }
   }, []);
 
   const onChange = (e) => {

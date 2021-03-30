@@ -1,14 +1,14 @@
 import http from "./http-common";
 
-const getMyProfile = async () => {
+const getMyProfile = async (componentCancelToken) => {
   http.defaults.headers.common["x-auth-token"] = localStorage.token;
-  const res = await http.get(`/api/profiles/me`);
+  const res = await http.get(`/api/profiles/me`, {cancelToken: componentCancelToken});
   return res.data;
 };
 
-const getAllProfiles = async () => {
+const getAllProfiles = async (componentCancelToken) => {
   http.defaults.headers.common["x-auth-token"] = localStorage.token;
-  const res = await http.get("/api/profiles/");
+  const res = await http.get("/api/profiles/", {cancelToken: componentCancelToken});
   return res.data;
 };
 
@@ -41,9 +41,9 @@ const userRegistration = async (registrationData) => {
   return res.data;
 };
 
-const getUserProfileById = async (userId) => {
+const getUserProfileById = async (userId, componentCancelToken) => {
   http.defaults.headers.common["x-auth-token"] = localStorage.token;
-  const res = await http.get(`/api/profiles/user/${userId}`);
+  const res = await http.get(`/api/profiles/user/${userId}`, {cancelToken: componentCancelToken});
   return res.data;
 };
 

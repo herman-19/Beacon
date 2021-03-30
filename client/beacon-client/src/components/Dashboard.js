@@ -11,6 +11,7 @@ import MenuCollapsible from "../components/MenuCollapsible";
 import SharedTasksCollapsible from "../components/SharedTasksCollapsible";
 import Navbar from "./Navbar";
 import { getMyProfile, getAllProfiles } from "../api/UserAPI";
+import axios from "axios";
 
 const useStyles = makeStyles({
   root: {
@@ -33,19 +34,25 @@ const Dashboard = () => {
   const [myProfile, setMyProfile] = useState(null);
   const [allProfiles, setAllProfiles] = useState(null);
   const classes = useStyles();
+  const signal = axios.CancelToken.source();
 
   useEffect(() => {
     async function fetchData() {
       try {
-        let data = await getMyProfile();
+        let data = await getMyProfile(signal.token);
         setMyProfile(data);
-        data = await getAllProfiles();
+        data = await getAllProfiles(signal.token);
         setAllProfiles(data);
       } catch (error) {
         console.error(error.message);
       }
     }
     fetchData();
+
+    // Cleanup: Signal to cancel any request.
+    return () => {
+      signal.cancel("Request for Dashboard page canceled.");
+    };
   }, []);
 
   return (

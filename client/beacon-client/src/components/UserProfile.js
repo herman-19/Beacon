@@ -10,6 +10,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Navbar from "../components/Navbar";
 import MenuCollapsible from "../components/MenuCollapsible";
 import { getUserProfileById } from "../api/UserAPI";
+import axios from "axios";
 
 const useStyles = makeStyles({
   root: {
@@ -32,17 +33,23 @@ const UserProfile = () => {
   const [userProfile, setUserProfile] = useState(null);
   const { id } = useParams();
   const classes = useStyles();
+  const signal = axios.CancelToken.source();
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const data = await getUserProfileById(id);
+        const data = await getUserProfileById(id, signal.token);
         setUserProfile(data);
       } catch (error) {
         console.error(error.message);
       }
     }
     fetchData();
+
+    // Cleanup: Signal to cancel any request.
+    return () => {
+        signal.cancel("Request for User Profile page canceled.")
+    }
   }, []);
 
   return (
