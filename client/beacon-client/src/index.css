@@ -282,8 +282,8 @@ ul.topnav li.right {
 .card {
   margin: 5px 10px;
   display: inline-block;
-  max-width: 35%;
-  min-width: 330px;
+  max-width: 25%;
+  min-width: 300px;
   background-color: #fff;
   border: 1px solid lightgrey;
   border-radius: 4px;
