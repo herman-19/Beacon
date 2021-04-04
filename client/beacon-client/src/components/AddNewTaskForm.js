@@ -126,10 +126,15 @@ const AddNewTaskForm = ({ show, toggleDisplayAddTask, updateDashboard }) => {
                   })}
                 />
               </div>
-              <button type="submit" className={classes.buttonAdd}>
+              <button
+                onSubmit={handleSubmit(onSubmit)}
+                type="submit"
+                className={classes.buttonAdd}
+              >
                 Add
               </button>
               <button
+                type="button"
                 onClick={() => toggleDisplayAddTask()}
                 className={classes.buttonCancel}
               >
