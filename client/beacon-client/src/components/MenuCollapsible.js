@@ -29,7 +29,7 @@ const useStyles = makeStyles({
   },
 });
 
-const MenuCollapsible = ({items, title}) => {
+const MenuCollapsible = ({ items, title }) => {
   const [index, setIndex] = useState(-1);
   const createOnClick = (idx) => () => setIndex(idx);
   const classes = useStyles();

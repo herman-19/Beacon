@@ -9,9 +9,12 @@ import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import MenuCollapsible from "../components/MenuCollapsible";
 import SharedTasksCollapsible from "../components/SharedTasksCollapsible";
+import AddNewTask from "../components/AddNewTask";
 import Navbar from "./Navbar";
 import { getMyProfile, getAllProfiles } from "../api/UserAPI";
 import axios from "axios";
+
+import AddNewTaskForm from "../components/AddNewTaskForm";
 
 const useStyles = makeStyles({
   root: {
@@ -33,6 +36,7 @@ const useStyles = makeStyles({
 const Dashboard = () => {
   const [myProfile, setMyProfile] = useState(null);
   const [allProfiles, setAllProfiles] = useState(null);
+  const [displayAddTask, setDisplayAddTask] = useState(false);
   const classes = useStyles();
   const signal = axios.CancelToken.source();
 
@@ -54,6 +58,10 @@ const Dashboard = () => {
       signal.cancel("Request for Dashboard page canceled.");
     };
   }, []);
+
+  const toggleDisplayAddTask = () => {
+    setDisplayAddTask((prevDisplay) => !prevDisplay);
+  };
 
   return (
     <div>
@@ -100,6 +108,12 @@ const Dashboard = () => {
           </div>
 
           <div id="main-block">
+            <AddNewTask toggleDisplayAddTask={toggleDisplayAddTask} />
+            <AddNewTaskForm
+              show={displayAddTask}
+              toggleDisplayAddTask={toggleDisplayAddTask}
+              updateDashboard={setMyProfile}
+            />
             <MenuCollapsible
               items={myProfile.tasks}
               title={myProfile.tasks.length ? "My Tasks" : "No Tasks Yet"}
