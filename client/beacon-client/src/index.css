@@ -295,9 +295,63 @@ ul.topnav li.right {
   margin: 0 0 10px 0;
 }
 
-.unassigned-text {
-  color: #31a561;
+.unresolved-text {
+  color: #e60b16;
   font-size: small;
+  font-weight: 600;
+}
+
+.active-text {
+  color: #0ba1e6;
+  font-size: small;
+  font-weight: 600;
+}
+
+#help-others {
+  margin: 15px 25px;
+  height: 45px;
+  width: 45px;
+}
+
+#help-others:hover {
+  margin: 10px 20px;
+  height: 55px;
+  width: 55px;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltip-text {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  top: 90%;
+  left: 50%;
+  margin-left: -60px;
+}
+
+.tooltip .tooltip-text::after {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent black transparent;
+}
+
+.tooltip:hover .tooltip-text {
+  visibility: visible;
 }
 
 .body-content {

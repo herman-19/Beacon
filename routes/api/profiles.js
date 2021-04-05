@@ -152,6 +152,7 @@ router.put(
       description,
       deadline,
       location,
+      status: "UNRESOLVED",
     };
 
     try {
