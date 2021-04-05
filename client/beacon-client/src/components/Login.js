@@ -18,8 +18,7 @@ const Login = ({ loginDisplayed }) => {
         history.push("/dashboard");
       }, 1000);
     } catch (error) {
-      const errMsg = error.response.data.errors[0].msg;
-      setMessage({ info: `${errMsg}`, type: `warning` });
+      setMessage({ info: `${error}`, type: `warning` });
     }
   };
 

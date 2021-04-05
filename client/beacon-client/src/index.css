@@ -9,7 +9,7 @@
 body {
   font-family: "Open Sans", sans-serif;
   height: 100%;
-  background-color: #f2f2f2;
+  background-color: #2f4856f2;
 }
 
 .landing {
@@ -230,7 +230,7 @@ ul.topnav li.right {
   margin: auto;
   text-align: left;
   background-color: #fff;
-  border: 1.5px solid lightgrey;
+  border: 1px solid lightgrey;
   border-radius: 5px;
   padding: 20px;
   max-width: 450px;
@@ -293,6 +293,11 @@ ul.topnav li.right {
   color: #888787;
   font-size: small;
   margin: 0 0 10px 0;
+}
+
+.unassigned-text {
+  color: #31a561;
+  font-size: small;
 }
 
 .body-content {
