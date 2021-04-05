@@ -63,15 +63,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SharedMenuCollapsible = (props) => {
+const SharedMenuCollapsible = ({ profiles, myId, title }) => {
   const [index, setIndex] = useState(-1);
   const createOnClick = (idx) => () => setIndex(idx);
   const classes = useStyles();
 
   const listItemData = [];
 
-  props.profiles.forEach((profile) => {
-    if (profile.user._id === props.myId) {
+  profiles.forEach((profile) => {
+    if (profile.user._id === myId) {
       return;
     }
 
@@ -166,7 +166,7 @@ const SharedMenuCollapsible = (props) => {
               onClick={createOnClick(0)}
               className={classes.title}
             >
-              <h3>{props.title}</h3>
+              <h3>{title}</h3>
             </Menu.RowItem>
             <Menu.Action button toggled={collapsed} onClick={onClick} />
           </Menu.Row>
