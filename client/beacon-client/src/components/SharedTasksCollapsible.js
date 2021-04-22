@@ -34,19 +34,28 @@ const useStyles = makeStyles((theme) => ({
   taskOwner: {
     color: "#000",
     fontSize: "14px",
+    "@media (max-width: 600px)": {
+      textAlign: "center",
+    },
   },
   taskTitle: {
     color: "#000",
     marginBottom: "5px",
+    "@media (max-width: 600px)": {
+      textAlign: "center",
+    },
   },
   taskDesc: {
     fontWeight: "300",
     margin: "0 0 10px 0",
+    "@media (max-width: 600px)": {
+      textAlign: "center",
+    },
   },
   taskStatus: {
     padding: "15px 30px",
     "@media (max-width: 600px)": {
-      margin: "auto",
+      margin: "10px auto",
       textAlign: "center",
       padding: "0px 30px",
     },

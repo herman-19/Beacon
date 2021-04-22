@@ -48,8 +48,8 @@ const UserProfile = () => {
 
     // Cleanup: Signal to cancel any request.
     return () => {
-        signal.cancel("Request for User Profile page canceled.")
-    }
+      signal.cancel("Request for User Profile page canceled.");
+    };
   }, []);
 
   return (
@@ -94,11 +94,7 @@ const UserProfile = () => {
           <div id="main-block">
             <MenuCollapsible
               items={userProfile.tasks}
-              title={
-                userProfile.tasks.length
-                  ? "Tasks"
-                  : `No Pending Tasks At The Moment...`
-              }
+              title={userProfile.tasks.length ? "Tasks" : `No Tasks`}
               className={classes.collapsible}
             />
           </div>
