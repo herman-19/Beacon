@@ -3,6 +3,10 @@ const router = express.Router();
 const auth = require("../../middleware/authentication");
 const fs = require("fs");
 const path = require("path");
+const conf = require("config");
+const sgAPIKey = conf.get("SENDGRID_API_KEY");
+const sgMail = require("@sendgrid/mail");
+sgMail.setApiKey(sgAPIKey);
 
 const { check, validationResult } = require("express-validator");
 
@@ -115,6 +119,70 @@ router.post(
     } catch (error) {
       console.error(error.message);
       res.status(500).send("Server Error.");
+    }
+  }
+);
+
+// @route   POST api/profiles/help/:userId
+// @desc    Send email notification to user that
+//          a different user wants to help with task
+// @access  Private
+router.post(
+  "/help/:userId",
+  [auth, [check("taskId", "Task id is required.").not().isEmpty()]],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    // Find profile and update task status to active.
+    try {
+      let helpingUser = await User.findOne({ _id: req.user.id });
+      let profile = await Profile.findOne({
+        user: req.params.userId,
+      }).populate({ path: "user", model: "user", select: ["name", "email"] });
+      if (!profile) {
+        return res.status(400).json({ msg: "Profile not found." });
+      }
+
+      // Update profile task status to Active
+      const { taskId } = req.body;
+      const updatedTaskList = profile.tasks;
+      const taskIndex = updatedTaskList.findIndex((el) => el._id == taskId);
+      const updatedTask = updatedTaskList[taskIndex];
+      updatedTaskList[taskIndex].status = "ACTIVE";
+
+      // Send email notification to task owner.
+      const msg = {
+        to: profile.user.email,
+        from: "beaconappnotification@gmail.com",
+        subject: `${helpingUser.name} wants to help you!`,
+        html: `<strong>Connect with ${helpingUser.name} to get your task done!</strong></br>
+               <p>(Email: ${helpingUser.email})</p>
+               <br/>
+               <strong>Task</strong>
+               <p>Title: ${updatedTask.title}</p>
+               <p>Description: ${updatedTask.description}</p>
+               <br/>
+               <p>- Beacon</p>`,
+      };
+      await sgMail.send(msg);
+
+      const fields = {};
+      fields.tasks = updatedTaskList;
+      profile = await Profile.findOneAndUpdate(
+        { user: req.params.userId },
+        { $set: fields },
+        { new: true }
+      );
+      res.json(profile);
+    } catch (err) {
+      console.error(err.message);
+      if (err.kind == "ObjectId") {
+        return res.status(400).json({ msg: "Profile not found." });
+      }
+      res.status(500).send("Server Error");
     }
   }
 );
