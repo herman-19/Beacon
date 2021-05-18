@@ -61,6 +61,18 @@ const getUserProfileById = async (userId, componentCancelToken) => {
   return res.data;
 };
 
+const helpUserWithTask = async (userId, taskId) => {
+  http.defaults.headers.common["x-auth-token"] = localStorage.token;
+  const res = await http.post(
+    `api/profiles/help/${userId}`,
+    { taskId },
+    {
+      headers: { "Content-Type": "application/json" },
+    }
+  );
+  return res.data;
+};
+
 export {
   getMyProfile,
   getAllProfiles,
@@ -70,4 +82,5 @@ export {
   userLogin,
   userRegistration,
   getUserProfileById,
+  helpUserWithTask,
 };

@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
 import Menu from "@mui-treasury/components/menu/collapsible";
 import HelpOthers from "../img/help-others.png";
+import { helpUserWithTask } from "../api/UserAPI";
 
 const useStyles = makeStyles((theme) => ({
   box: {
@@ -72,10 +73,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SharedMenuCollapsible = ({ profiles, myId, title }) => {
+const SharedMenuCollapsible = ({ profiles, myId, title, setTaskHelped }) => {
   const [index, setIndex] = useState(-1);
   const createOnClick = (idx) => () => setIndex(idx);
   const classes = useStyles();
+
+  const helpOnClick = async (userId, taskId) => {
+    try {
+      await helpUserWithTask(userId, taskId);
+      setTaskHelped(true);
+    } catch (error) {
+      const errMsg = error.response.data.errors[0].msg;
+      console.log(errMsg);
+    }
+  };
 
   const listItemData = [];
 
@@ -97,6 +108,7 @@ const SharedMenuCollapsible = ({ profiles, myId, title }) => {
     profile.tasks.forEach((task) => {
       let taskObj = {};
       taskObj["owner"] = profile.user.name;
+      taskObj["ownerId"] = profile.user._id;
       taskObj["title"] = task.title;
       taskObj["description"] = task.description;
       taskObj["id"] = task._id;
@@ -141,7 +153,7 @@ const SharedMenuCollapsible = ({ profiles, myId, title }) => {
                   <div className="tooltip">
                     <input
                       onClick={() => {
-                        console.log(`Helping Out ${item.owner}!`);
+                        helpOnClick(item.ownerId, item.id);
                       }}
                       type="image"
                       id="help-others"

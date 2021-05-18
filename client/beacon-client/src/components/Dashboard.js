@@ -37,6 +37,7 @@ const Dashboard = () => {
   const [myProfile, setMyProfile] = useState(null);
   const [allProfiles, setAllProfiles] = useState(null);
   const [displayAddTask, setDisplayAddTask] = useState(false);
+  const [taskHelped, setTaskHelped] = useState(false);
   const classes = useStyles();
   const signal = axios.CancelToken.source();
 
@@ -47,6 +48,7 @@ const Dashboard = () => {
         setMyProfile(data);
         data = await getAllProfiles(signal.token);
         setAllProfiles(data);
+        setTaskHelped(false);
       } catch (error) {
         console.error(error.message);
       }
@@ -57,7 +59,7 @@ const Dashboard = () => {
     return () => {
       signal.cancel("Request for Dashboard page canceled.");
     };
-  }, []);
+  }, [taskHelped]); // add taskHelped to trigger refresh of shared tasks
 
   const toggleDisplayAddTask = () => {
     setDisplayAddTask((prevDisplay) => !prevDisplay);
@@ -125,6 +127,7 @@ const Dashboard = () => {
               myId={myProfile.user._id}
               title="Shared Tasks"
               className={classes.collapsible}
+              setTaskHelped={setTaskHelped}
             />
           </div>
         </div>
